@@ -1,15 +1,11 @@
 variable "region" {
   default = "us-east-1"
 }
-
-
-terraform {
-  backend "s3" {
-      bucket = "terraform-state-bucket-wp"
-      key = "wordpress-env"
-      region = "${var.region}"
-  }
-}
+variable "access_key" {}
+variable "secret_key" {}
+variable "domain_name" {}
+variable "zone_id" {}
+variable "certification_arn" {}
 
 provider "aws" {
     access_key = "${var.access_key}"
@@ -17,9 +13,14 @@ provider "aws" {
     region     = "${var.region}"
 }
 
+
 module "wp" {
     wordpress_ami      = "ami-01fcd26a79fd0b150"
-    keyname            = " "
-
+    key_name            = "wordpressadm"
     source      = "./modules"
+    region     = "${var.region}"
+    zone_id = "${var.zone_id}"
+    domain_name = "${var.domain_name}"
+    certification_arn = "${var.certification_arn}"
+
 }
