@@ -1,6 +1,10 @@
+resource "aws_default_security_group" "default" {
+  vpc_id = aws_vpc.wp_vpc.id
+}
+
 resource "aws_security_group" "wp_ec2_sg" {
   name        = "wp_ec2_sg"
-  vpc_id      = "${aws_vpc.wp_vpc.id}"
+  vpc_id      = aws_vpc.wp_vpc.id
 
   ingress {
     from_port   = 80
@@ -8,7 +12,7 @@ resource "aws_security_group" "wp_ec2_sg" {
     protocol    = "tcp"
 
     security_groups = [
-      "${aws_security_group.wp_alb_sg.id}",
+      aws_security_group.wp_alb_sg.id,
     ]  
   }
 
@@ -23,7 +27,7 @@ resource "aws_security_group" "wp_ec2_sg" {
 
 resource "aws_security_group" "wp_alb_sg" {
   name        = "wp_alb_sg"
-  vpc_id      = "${aws_vpc.wp_vpc.id}"
+  vpc_id      = aws_vpc.wp_vpc.id
 
   ingress {
     from_port   = 443
