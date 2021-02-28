@@ -5,6 +5,16 @@ variable "wordpress_ami" {}
 variable "key_name" {}
 variable "region" {}
 
+terraform {
+  required_version = ">= 0.12.0"
+  backend "s3" {
+    bucket = "terraform-state-moennig" # 作成したS3バケット
+    region = "us-east-1"
+    key = "wordpress.tfstate"
+    encrypt = true
+  }
+}
+
 provider "aws" {
     region = var.region
 }
